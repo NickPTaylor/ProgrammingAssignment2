@@ -84,9 +84,19 @@ cacheSolve <- function(x, ...) {
 
 ################################################################################
 #
-#  The main program runs a set of informal tests first and then applies unit 
-#  tests.
+#  The main program displays a set of informal tests first and then applies unit 
+#  tests which can be found in the 'tests' folder on the GitHub remote repo.
 #
 ################################################################################
 
+set.seed(0)                                 # set seed for repeatable results
+test.mat = matrix(rnorm(9), 3, 3)           # make test matrix
+test.cache = makeCacheMatrix(test.mat)      # make test cache
+print(cacheSolve(test.cache))               # pass cache, print result
+print(cacheSolve(test.cache))               # should retrieve from cache
+test.cache = makeCacheMatrix(test.mat)      # reset
+print(cacheSolve(test.cache))               # should recalculate
+
+# unit testing
+cat("\nUnit Testing:\n\n")
 test_file('tests/testSet1.R')
