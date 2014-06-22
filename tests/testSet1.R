@@ -42,3 +42,29 @@ test_that("cache is cleared upon reset", {
     mcm.instance <- makeCacheMatrix(mat.2)
     expect_that(mcm.instance$getinv(), is_identical_to(NULL))    
 })
+
+context("Tests for cacheSolve function")
+
+test_that("inverse is returned for new makeCacheMatrix instance", {
+    
+    mcm.instance.1 <- makeCacheMatrix(mat.1)
+    expect_that(comp.1 <- cacheSolve(mcm.instance.1), 
+                shows_message("calculating inverse"))
+    expect_that(comp.1, is_identical_to(inv.1))
+    
+    mcm.instance.2 <- makeCacheMatrix(mat.2)
+    expect_that(comp.2 <- cacheSolve(mcm.instance.2), 
+                shows_message("calculating inverse"))
+    expect_that(comp.2, is_identical_to(inv.2))
+})
+
+test_that("cache is used if inverse has already been calculated", {
+    
+    mcm.instance.1 <- makeCacheMatrix(mat.1)
+    expect_that(comp.1 <- cacheSolve(mcm.instance.1), 
+                shows_message("calculating inverse"))
+    expect_that(comp.1, is_identical_to(inv.1)) 
+    expect_that(comp.2 <- cacheSolve(mcm.instance.1), 
+                                        shows_message("getting cached data"))
+    expect_that(comp.2, is_identical_to(inv.1))    
+})
