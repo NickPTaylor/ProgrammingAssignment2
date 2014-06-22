@@ -28,8 +28,26 @@ library('testthat')
 #
 ################################################################################
 
-makeCacheMatrix <- function(x = matrix()) {
-
+makeCacheMatrix <- function(cached.mat = matrix()) {
+    
+    # initialise cache each time function is invoked
+    cached.inv <- NULL
+    
+    # if cached matrix is reset, clear cache
+    set <- function(x) {
+        cached.mat <<- x               
+        cached.inv <<- NULL
+    }
+    
+    get <- function() cached.mat
+    setinv <- function(y) cached.inv <<- y
+    getinv <- function() cached.inv
+    
+    # return list of functions
+    list(set = set, 
+         get = get,
+         setinv = setinv,
+         getinv = getinv)
 }
 
 ################################################################################
@@ -54,4 +72,4 @@ cacheSolve <- function(x, ...) {
 #
 ################################################################################
 
-test_dir('tests', reporter = 'Summary')
+test_file('tests/testSet1.R')
